@@ -1,16 +1,18 @@
+import { useQuery } from '@tanstack/react-query'
 import companySvg from '../assets/company.svg'
+import { api } from '../lib/api'
+import Company from '../models/Company'
 
 export default function Navbar() {
+
+    const { data: companies, isLoading } = useQuery<{ data: Company[] }>({
+        queryKey: ['companies'],
+        queryFn: async () => await api.get('/companies')
+    })
     
     const toggleDarkMode = () => {
         document.documentElement.classList.toggle('dark')
     }
-
-    const companies = [
-        {id: "662fd0ee639069143a8fc387", name:"Jaguar"},
-        {id: "662fd0fab3fd5656edb39af5", name:"Tobias"},
-        {id: "662fd100f990557384756e58", name:"Apex"}
-    ]
     
     return (
         <div className="w-full bg-white dark:bg-[#17192D] p-4 flex flex-col gap-3 sm:flex-row justify-center sm:justify-between items-center transition">
@@ -22,10 +24,10 @@ export default function Navbar() {
 
             <div className="flex flex-row items-center">
                 {/* Companias */}
-                {companies.map((company) => (
+                {companies?.data.map((company) => (
                     <button key={company.id} className="text-white bg-blue-900 hover:bg-blue-950 transition rounded py-2 px-3  flex flex-row space-x-3 items-center mx-1">
                         <img src={companySvg} className='w-5' />
-                        <b>{company.name} Unit</b>
+                        <b>{company.name}</b>
                     </button>
                 ))}
 
