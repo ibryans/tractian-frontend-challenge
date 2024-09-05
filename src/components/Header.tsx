@@ -6,7 +6,7 @@ export default function Header() {
     const company = {id: '2343', name: 'Apex Unit'}
 
     return (
-        <div className="flex flex-col md:flex-row justify-between">
+        <div className="flex flex-col sm:flex-row justify-between">
             
             {/* Empresa selecionada */}
             <div className="flex space-x-3 items-center">

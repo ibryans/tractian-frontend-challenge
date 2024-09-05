@@ -47,7 +47,7 @@ export default function Product() {
             </div>
 
             {/* Sensor e receptor */}
-            <div className="flex flex-row items-center mx-5">
+            <div className="flex flex-row items-center mx-5 mb-5">
                 <div className="flex flex-col gap-2 w-1/2 xl:w-1/3">
                     <b>Sensor</b>
                     <div className="flex space-x-2 items-center">
