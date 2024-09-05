@@ -2,12 +2,15 @@ import { useQuery } from '@tanstack/react-query'
 import companySvg from '../assets/company.svg'
 import { api } from '../lib/api'
 import Company from '../models/Company'
+import useCompany from '../store/useCompany'
 
 export default function Navbar() {
 
-    const { data: companies, isLoading } = useQuery<{ data: Company[] }>({
+    const companyState = useCompany((state) => state)
+
+    const { data: companies } = useQuery<{ data: Company[] }>({
         queryKey: ['companies'],
-        queryFn: async () => await api.get('/companies')
+        queryFn: async () => await api.get('/companies'),
     })
     
     const toggleDarkMode = () => {
@@ -23,16 +26,19 @@ export default function Navbar() {
             </svg>
 
             <div className="flex flex-row items-center">
-                {/* Companias */}
+                {/* Empresas */}
                 {companies?.data.map((company) => (
-                    <button key={company.id} className="text-white bg-blue-900 hover:bg-blue-950 transition rounded py-2 px-3  flex flex-row space-x-3 items-center mx-1">
+                    <button 
+                        onClick={() => companyState.select(company)} 
+                        key={company.id} 
+                        className={`text-white ${companyState.company?.id === company.id ? 'bg-blue-500' : 'bg-blue-900 hover:bg-blue-950'} transition rounded py-2 px-3  flex flex-row space-x-3 items-center mx-1`}>
                         <img src={companySvg} className='w-5' />
                         <b>{company.name}</b>
                     </button>
                 ))}
 
                 {/* Modo Escuro */}
-                <svg onClick={toggleDarkMode} className="ml-4 dark:hidden hover:animate-spin-finite hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20" viewBox="0 0 256 256" xmlSpace="preserve">
+                <svg onClick={toggleDarkMode} className="mx-5 dark:hidden hover:animate-spin-finite hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" version="1.1" width="25" height="25" viewBox="0 0 256 256" xmlSpace="preserve">
                     <defs></defs>
                     <g style={{ strokeWidth: 0, strokeDasharray: 'none', strokeLinecap: 'butt', strokeLinejoin: 'miter', strokeMiterlimit: 10, fill: 'none', opacity: 1 }} transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)" >
                         <path d="M 87.823 60.7 c -0.463 -0.423 -1.142 -0.506 -1.695 -0.214 c -15.834 8.398 -35.266 2.812 -44.232 -12.718 c -8.966 -15.53 -4.09 -35.149 11.101 -44.665 c 0.531 -0.332 0.796 -0.963 0.661 -1.574 c -0.134 -0.612 -0.638 -1.074 -1.259 -1.153 c -9.843 -1.265 -19.59 0.692 -28.193 5.66 C 13.8 12.041 6.356 21.743 3.246 33.35 S 1.732 57.08 7.741 67.487 c 6.008 10.407 15.709 17.851 27.316 20.961 C 38.933 89.486 42.866 90 46.774 90 c 7.795 0 15.489 -2.044 22.42 -6.046 c 8.601 -4.966 15.171 -12.43 18.997 -21.586 C 88.433 61.79 88.285 61.123 87.823 60.7 z" style={{ strokeWidth: 1, strokeDasharray: 'none', strokeLinecap: 'butt', strokeLinejoin: 'miter', strokeMiterlimit: 10, fill: 'black', opacity: 1 }} transform=" matrix(1 0 0 1 0 0) " strokeLinecap="round" />
@@ -40,7 +46,7 @@ export default function Navbar() {
                 </svg>
 
                 {/* Modo claro */}
-                <svg onClick={toggleDarkMode} className="ml-4 hidden dark:block hover:animate-spin-finite hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" width="20" height="20" viewBox="0 0 256 256" xmlSpace="preserve">
+                <svg onClick={toggleDarkMode} className="mx-5 hidden dark:block hover:animate-spin-finite hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" width="25" height="25" viewBox="0 0 256 256" xmlSpace="preserve">
                     <defs></defs>
                     <g style={{ strokeWidth: 0, strokeDasharray: 'none', strokeLinecap: 'butt', strokeLinejoin: 'miter', strokeMiterlimit: 10, fill: 'none', opacity: 1 }} transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)" >
                         <path d="M 45 68 c -12.682 0 -23 -10.317 -23 -23 c 0 -12.682 10.318 -23 23 -23 c 12.683 0 23 10.318 23 23 C 68 57.683 57.683 68 45 68 z M 45 28 c -9.374 0 -17 7.626 -17 17 s 7.626 17 17 17 s 17 -7.626 17 -17 S 54.374 28 45 28 z" style={{ strokeWidth: 0, strokeDasharray: 'none', strokeLinecap: 'butt', strokeLinejoin: 'miter', strokeMiterlimit: 10, fill: 'white', opacity: 1 }} transform=" matrix(1 0 0 1 0 0) " strokeLinecap="round" />

@@ -1,9 +1,10 @@
 import { FaBolt } from "react-icons/fa6"
 import { PiWarningCircleBold } from "react-icons/pi"
+import useCompany from "../store/useCompany"
 
 export default function Header() {
 
-    const company = {id: '2343', name: 'Apex Unit'}
+    const company = useCompany((state) => state.company)
 
     return (
         <div className="flex flex-col sm:flex-row justify-between">
@@ -14,7 +15,7 @@ export default function Header() {
                     Ativos
                 </h1>
                 <h2 className='text-xl text-gray-400 dark:text-gray-300'>
-                    / { company.name }
+                    / { company?.name }
                 </h2>
             </div>
 
