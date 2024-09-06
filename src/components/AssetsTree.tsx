@@ -1,43 +1,53 @@
-import { BiChevronRight } from "react-icons/bi";
-import { FiMapPin } from "react-icons/fi";
 import useCompany from "../store/useCompany";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
-// import Asset from "../models/Asset";
+import Asset from "../models/Asset";
 import Location from "../models/Location";
+import useLocations from "../store/useLocations";
+import LocationComponent from "./Location";
 
 export default function AssetsTree() {
     const company = useCompany((state) => state.company)
+    const updateLocations = useLocations((state) => state.update)
 
     const { data: locations } = useQuery<{ data: Location[] }>({
         queryKey: ['locations', company?.id],
-        queryFn: async () => await api.get(`/companies/${company?.id}/locations`),
+        queryFn: async () => {
+            const response = await api.get(`/companies/${company?.id}/locations`)
+            updateLocations(response.data);
+            return response;
+        },
     })
 
-    // const { data: assets } = useQuery<{ data: Asset[] }>({
-    //     queryKey: ['assets', company?.id],
-    //     queryFn: async () => await api.get(`/companies/${company?.id}/assets`)
-    // })
+    const { data: assets } = useQuery<{ data: Asset[] }>({
+        queryKey: ['assets', company?.id],
+        queryFn: async () => await api.get(`/companies/${company?.id}/assets`)
+    })
 
-    const rootLocations = locations?.data.filter((loc) => !loc.parentId);
+    const treeConstruction = (locations?: Location[]) => {
+        if (!locations) return [];
+        const rootLocations = locations.filter((loc) => !loc.parentId);
+        const tree: any = rootLocations?.map((loc) => ({
+            ...loc,
+        }))
+        return tree;
+    }
 
-    const tree = rootLocations?.map((loc) => ({
-        ...loc,
-        children: locations?.data.filter((l) => l.parentId === loc.id)
-    }))
+    const tree = treeConstruction(locations?.data);
 
+    console.log('~ assets: ', assets)
 
     return (
         <div className="flex flex-col space-y-4 border-t border-gray-300 dark:border-gray-600 p-3 overflow-auto">
-            
-            {tree?.map((location) => (
-                <div className="flex space-x-2 items-center cursor-pointer">
-                    <BiChevronRight className="w-5 h-5"/>
-                    <FiMapPin className="text-blue-500 w-5 h-5"/> 
-                    <span>{ location.name }</span>
-                </div>
+            {tree?.map((item: any) => (
+                <LocationComponent 
+                    currentLocation={item} 
+                    locations={locations 
+                        ? locations.data.filter((l) => l.parentId === item.id)
+                        : []
+                    } 
+                />
             ))}
-            
         </div>
     )
 }
