@@ -5,6 +5,7 @@ import AssetsTree from './components/AssetsTree'
 import Header from './components/Header'
 import Product from './components/Product'
 import useCompany from './store/useCompany'
+import { FaInbox } from 'react-icons/fa'
 
 function App() {
 
@@ -28,9 +29,12 @@ function App() {
                     <Product/>
                   </>
                 : 
-                  <span>
-                    Nenhuma empresa selecionada
-                  </span>
+                  <div className="flex flex-col justify-center items-center w-full h-full text-gray-300 dark:text-gray-500">
+                    <FaInbox className='w-10 h-10'/>
+                    <span>
+                      Nenhuma empresa selecionada
+                    </span>
+                  </div>
               }
             </div>
         </div>
