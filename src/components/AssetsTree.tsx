@@ -1,4 +1,4 @@
-import { BiChevronDown } from "react-icons/bi";
+import { BiChevronRight } from "react-icons/bi";
 import { FiMapPin } from "react-icons/fi";
 import useCompany from "../store/useCompany";
 import { useQuery } from "@tanstack/react-query";
@@ -32,7 +32,7 @@ export default function AssetsTree() {
             
             {tree?.map((location) => (
                 <div className="flex space-x-2 items-center cursor-pointer">
-                    <BiChevronDown className="w-5 h-5"/>
+                    <BiChevronRight className="w-5 h-5"/>
                     <FiMapPin className="text-blue-500 w-5 h-5"/> 
                     <span>{ location.name }</span>
                 </div>

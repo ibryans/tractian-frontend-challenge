@@ -18,13 +18,20 @@ function App() {
             <Header/>
             <div className="flex flex-1 flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 mt-5 overflow-hidden">
               
-              { company && 
-                <div className='w-full md:w-1/3 border border-gray-300 dark:border-gray-600 rounded flex flex-col flex-1 transition overflow-auto'>  
-                  <Search/>
-                  <AssetsTree/>
-                </div>
+              { company 
+                ?
+                  <>
+                    <div className='w-full md:w-1/3 border border-gray-300 dark:border-gray-600 rounded flex flex-col transition overflow-auto'>  
+                      <Search/>
+                      <AssetsTree/>
+                    </div>
+                    <Product/>
+                  </>
+                : 
+                  <span>
+                    Nenhuma empresa selecionada
+                  </span>
               }
-              <Product/>
             </div>
         </div>
       </main>
