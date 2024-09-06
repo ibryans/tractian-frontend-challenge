@@ -3,7 +3,7 @@ import { FiMapPin } from "react-icons/fi";
 import useCompany from "../store/useCompany";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
-import Asset from "../models/Asset";
+// import Asset from "../models/Asset";
 import Location from "../models/Location";
 
 export default function AssetsTree() {
@@ -14,10 +14,10 @@ export default function AssetsTree() {
         queryFn: async () => await api.get(`/companies/${company?.id}/locations`),
     })
 
-    const { data: assets } = useQuery<{ data: Asset[] }>({
-        queryKey: ['assets', company?.id],
-        queryFn: async () => await api.get(`/companies/${company?.id}/assets`)
-    })
+    // const { data: assets } = useQuery<{ data: Asset[] }>({
+    //     queryKey: ['assets', company?.id],
+    //     queryFn: async () => await api.get(`/companies/${company?.id}/assets`)
+    // })
 
     const rootLocations = locations?.data.filter((loc) => !loc.parentId);
 
