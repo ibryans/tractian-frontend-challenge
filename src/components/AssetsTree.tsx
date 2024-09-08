@@ -39,6 +39,7 @@ export default function AssetsTree() {
         <div className="flex flex-col space-y-4 border-t border-gray-300 dark:border-gray-600 p-3 overflow-auto">
             {rootLocations?.map((item: any) => (
                 <LocationComponent 
+                    key={item.id}
                     currentLocation={item} 
                     locations={locations 
                         ? locations.data.filter((l) => l.parentId === item.id)
@@ -47,7 +48,8 @@ export default function AssetsTree() {
                 />
             ))}
             {rootAssets?.map((item: any) => (
-                <AssetComponent 
+                <AssetComponent
+                    key={item.id}
                     currentAsset={item} 
                     assets={assets 
                         ? assets.data.filter((l) => l.parentId === item.id)

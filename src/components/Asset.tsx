@@ -5,9 +5,8 @@ import Asset from "../models/Asset";
 import { GrCube } from "react-icons/gr";
 import { PiCubeFocusBold } from "react-icons/pi";
 import { FaCircle } from "react-icons/fa";
-import useProduct from "../store/useProduct";
+import useComponent from "../store/useComponent";
 import { FaBolt } from "react-icons/fa6";
-
 type Props = {
     currentAsset: Asset;
     assets: Asset[];
@@ -17,19 +16,19 @@ export default function AssetComponent({ currentAsset, assets }: Props) {
     const [showSubAssets, setShowSubAssets] = useState<boolean>(false)
 
     const { assets: allAssets} = useAssets();
-    const { product, select: selectProduct } = useProduct();
+    const { component, select: selectComponent } = useComponent();
 
     const handleClick = () => {
         if (assets.length > 0)
             setShowSubAssets(!showSubAssets)
         else if (currentAsset.sensorType) {
-            selectProduct(currentAsset)
+            selectComponent(currentAsset)
         }
     }
 
     return (
         <>
-            <button onClick={handleClick} className={`flex space-x-2 items-center ${product?.id === currentAsset.id ? 'bg-blue-500 text-white p-1' : ''} rounded`}>
+            <button onClick={handleClick} className={`flex space-x-2 items-center ${component?.id === currentAsset.id ? 'bg-blue-500 text-white p-1' : ''} rounded`}>
                 { assets.length > 0 && 
                     <>
                         { showSubAssets 
@@ -39,7 +38,7 @@ export default function AssetComponent({ currentAsset, assets }: Props) {
                     </>
                 }
                 { currentAsset.sensorType 
-                    ? <PiCubeFocusBold className={`${product?.id === currentAsset.id ? 'text-white' : 'text-blue-500'} w-5 h-5`}/>
+                    ? <PiCubeFocusBold className={`${component?.id === currentAsset.id ? 'text-white' : 'text-blue-500'} w-5 h-5`}/>
                     : <GrCube className="text-blue-500 w-5 h-5"/>
                 }    
                 <span>{ currentAsset.name }</span>

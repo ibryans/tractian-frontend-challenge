@@ -48,7 +48,8 @@ export default function LocationComponent({ currentLocation, locations }: Props)
                         />
                     ))
                     : locations.map((loc) => (
-                    <LocationComponent 
+                    <LocationComponent
+                        key={loc.id}
                         currentLocation={loc} 
                         locations={allLocations.filter((l) => l.parentId == loc.id)}
                     />

@@ -2,24 +2,25 @@ import { FaCircle, FaInbox } from "react-icons/fa";
 import { FaBolt } from "react-icons/fa6";
 import { AiOutlineInbox } from "react-icons/ai";
 import { MdOutlineRouter, MdWifiTethering } from "react-icons/md";
+import useComponent from "../store/useComponent";
 
 export default function Product() {
 
-    const product = null;
+    const { component } = useComponent();
 
     return (
         <div className='flex flex-col w-full md:w-2/3 border border-gray-300 dark:border-gray-600 rounded'>
-            { product
+            { component
                 ? 
                     <>
                         {/* Header do Produto  */}
                         <div className="flex items-center space-x-3 border-b border-gray-300 dark:border-gray-600 p-4">
                             <h3 className="text-xl font-bold">
-                                MOTOR RT COAL AF01
+                                { component.name }
                             </h3>
-                            <FaCircle className="text-green-500 w-2.5 h-2.5"/>
-                            <FaBolt className="text-green-500 w-4 h-4"/>
-                            <FaCircle className="text-red-500 w-2.5 h-2.5"/>
+                            { component.sensorType === 'energy' && <FaBolt className="text-green-500 w-4 h-4"/> }
+                            { component.status === 'operating' && <FaCircle className="text-green-500 w-2.5 h-2.5"/> }
+                            { component.status === 'alert' && <FaCircle className="text-red-500 w-2.5 h-2.5"/> }
                         </div>
 
                         <div className="flex items-center space-x-5 xl:space-x-10 m-5 pb-5 border-b-2 border-gray-200 dark:border-gray-600">
@@ -44,7 +45,7 @@ export default function Product() {
                                             M
                                         </div>
                                         <span className="text-gray-500 dark:text-gray-300">
-                                            Mecanica
+                                            Mecânica
                                         </span>
                                     </div>
                                 </div>
@@ -58,7 +59,7 @@ export default function Product() {
                                 <div className="flex space-x-2 items-center">
                                     <MdWifiTethering className="text-blue-500 w-6 h-6"/>
                                     <span className="text-gray-500 dark:text-gray-300">
-                                        RWET667
+                                        { component.sensorId }
                                     </span>
                                 </div>
                             </div>
@@ -67,7 +68,7 @@ export default function Product() {
                                 <div className="flex space-x-2 items-center">
                                     <MdOutlineRouter className="text-blue-500 w-6 h-6"/>
                                     <span className="text-gray-500 dark:text-gray-300">
-                                        86GTFD7
+                                        { component.gatewayId }
                                     </span>
                                 </div>
                             </div>
@@ -76,7 +77,7 @@ export default function Product() {
                 : 
                     <div className="w-full h-full flex flex-col justify-center items-center text-gray-300 dark:text-gray-500">
                         <FaInbox className="w-10 h-10"/>
-                        <span>Nenhum produto selecionado</span>
+                        <span>Nenhum componente selecionado</span>
                     </div>
             }
 

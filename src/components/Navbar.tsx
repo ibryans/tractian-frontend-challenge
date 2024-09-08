@@ -3,10 +3,13 @@ import companySvg from '../assets/company.svg'
 import { api } from '../lib/api'
 import Company from '../models/Company'
 import useCompany from '../store/useCompany'
+import useComponent from '../store/useComponent'
 
 export default function Navbar() {
 
-    const companyState = useCompany((state) => state)
+    const { select: selectCompany, company: selectedCompany } = useCompany();
+    const { select: selectComponent } = useComponent();
+
 
     const { data: companies } = useQuery<{ data: Company[] }>({
         queryKey: ['companies'],
@@ -18,7 +21,7 @@ export default function Navbar() {
     }
     
     return (
-        <div className="w-full bg-white dark:bg-[#17192D] p-4 flex flex-col gap-3 sm:flex-row justify-center sm:justify-between items-center transition">
+        <div className="w-full bg-white dark:bg-[#17192D] p-4 flex flex-col gap-3 sm:flex-row justify-center sm:justify-between items-center transition duration-300">
             
             {/* Logo */}
             <svg className='fill-blue-600 dark:fill-white w-40' viewBox="317.35 452.61 1285.3 174.78" xmlns="http://www.w3.org/2000/svg">
@@ -29,9 +32,9 @@ export default function Navbar() {
                 {/* Empresas */}
                 {companies?.data.map((company) => (
                     <button 
-                        onClick={() => companyState.select(company)} 
-                        key={company.id} 
-                        className={`text-white ${companyState.company?.id === company.id ? 'bg-blue-500' : 'bg-blue-900 hover:bg-blue-950'} transition rounded py-2 px-3  flex flex-row space-x-3 items-center mx-1`}>
+                        key={company.id}
+                        onClick={() => { selectCompany(company); selectComponent(null); }} 
+                        className={`text-white ${selectedCompany?.id === company.id ? 'bg-blue-500' : 'bg-blue-900 hover:bg-blue-950'} transition rounded py-2 px-3  flex flex-row space-x-3 items-center mx-1`}>
                         <img src={companySvg} className='w-5' />
                         <b>{company.name}</b>
                     </button>
