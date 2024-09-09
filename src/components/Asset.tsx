@@ -35,15 +35,26 @@ export default function AssetComponent({ item }: Props) {
                         }
                     </>
                 }
+
                 { item.sensorType 
                     ? <PiCubeFocusBold className={`${component?.id === item.id ? 'text-white' : 'text-blue-500'} w-5 h-5`}/>
                     : <GrCube className="text-blue-500 w-5 h-5"/>
-                }    
-                <span>{ item.name }</span>
-                { item.sensorType === 'energy' && <FaBolt className="text-green-500 w-4 h-4"/> }
-                { item.status === 'operating' && <FaCircle className="text-green-500 w-2.5 h-2.5"/> }
-                { item.status === 'alert' && <FaCircle className="text-red-500 w-2.5 h-2.5"/> }
+                }
+
+                <span className="truncate">
+                    { item.name }
+                </span>
+                
+                { item.sensorType && 
+                    <>
+                        { item.sensorType === 'energy'
+                            ? <FaBolt className={`${item.status === 'operating' ? 'text-green-500' : 'text-red-500'} w-4 h-4`}/>
+                            : <FaCircle className={`${item.status === 'operating' ? 'text-green-500' : 'text-red-500'} w-2.5 h-2.5`}/>
+                        }
+                    </>
+                }
             </button>
+            
             { item.children.length > 0 && showSubAssets &&
                 <div className={`flex flex-col space-y-3 ml-2 pl-5 border-l border-gray-300 dark:border-gray-600`}>
                     {item.children.map((asset) => (

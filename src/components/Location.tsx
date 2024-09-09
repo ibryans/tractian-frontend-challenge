@@ -28,7 +28,7 @@ export default function LocationComponent({ item }: Props) {
                     </>
                 }
                 <FiMapPin className="text-blue-500 w-5 h-5"/>    
-                <span>{ item.name }</span>
+                <span className="truncate">{ item.name }</span>
             </button>
             { showSubLocations && 
                 <div className={`flex flex-col space-y-3 ml-2 pl-5 border-l border-gray-300 dark:border-gray-600`}>

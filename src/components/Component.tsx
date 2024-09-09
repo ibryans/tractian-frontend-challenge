@@ -18,9 +18,14 @@ export default function Product() {
                             <h3 className="text-xl font-bold">
                                 { component.name }
                             </h3>
-                            { component.sensorType === 'energy' && <FaBolt className="text-green-500 w-4 h-4"/> }
-                            { component.status === 'operating' && <FaCircle className="text-green-500 w-2.5 h-2.5"/> }
-                            { component.status === 'alert' && <FaCircle className="text-red-500 w-2.5 h-2.5"/> }
+                            { component.sensorType && 
+                                <>
+                                    { component.sensorType === 'energy'
+                                        ? <FaBolt className={`${component.status === 'operating' ? 'text-green-500' : 'text-red-500'} w-4 h-4`}/>
+                                        : <FaCircle className={`${component.status === 'operating' ? 'text-green-500' : 'text-red-500'} w-2.5 h-2.5`}/>
+                                    }
+                                </>
+                            }    
                         </div>
 
                         <div className="flex items-center space-x-5 xl:space-x-10 m-5 pb-5 border-b-2 border-gray-200 dark:border-gray-600">
@@ -75,7 +80,7 @@ export default function Product() {
                         </div>
                     </>
                 : 
-                    <div className="w-full h-full flex flex-col justify-center items-center text-gray-300 dark:text-gray-500">
+                    <div className="w-full h-full p-10 flex flex-col justify-center items-center text-gray-300 dark:text-gray-500">
                         <FaInbox className="w-10 h-10"/>
                         <span>Nenhum componente selecionado</span>
                     </div>
