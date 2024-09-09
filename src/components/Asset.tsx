@@ -1,35 +1,33 @@
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { useState } from "react";
-import useAssets from "../store/useAssets";
-import Asset from "../models/Asset";
 import { GrCube } from "react-icons/gr";
 import { PiCubeFocusBold } from "react-icons/pi";
 import { FaCircle } from "react-icons/fa";
 import useComponent from "../store/useComponent";
 import { FaBolt } from "react-icons/fa6";
+import { TreeNode } from "./AssetsTree";
+import Asset from "../models/Asset";
+
 type Props = {
-    currentAsset: Asset;
-    assets: Asset[];
+    item: TreeNode;
 }
 
-export default function AssetComponent({ currentAsset, assets }: Props) {
+export default function AssetComponent({ item }: Props) {
     const [showSubAssets, setShowSubAssets] = useState<boolean>(false)
-
-    const { assets: allAssets} = useAssets();
     const { component, select: selectComponent } = useComponent();
 
     const handleClick = () => {
-        if (assets.length > 0)
+        if (item.children.length > 0)
             setShowSubAssets(!showSubAssets)
-        else if (currentAsset.sensorType) {
-            selectComponent(currentAsset)
+        else if (item.sensorType) {
+            selectComponent(item as Asset)
         }
     }
 
     return (
         <>
-            <button onClick={handleClick} className={`flex space-x-2 items-center ${component?.id === currentAsset.id ? 'bg-blue-500 text-white p-1' : ''} rounded`}>
-                { assets.length > 0 && 
+            <button onClick={handleClick} className={`flex space-x-2 items-center ${component?.id === item.id ? 'bg-blue-500 text-white p-1' : ''} rounded`}>
+                { item.children.length > 0 && 
                     <>
                         { showSubAssets 
                             ? <BiChevronDown className="w-5 h-5 "/> 
@@ -37,22 +35,21 @@ export default function AssetComponent({ currentAsset, assets }: Props) {
                         }
                     </>
                 }
-                { currentAsset.sensorType 
-                    ? <PiCubeFocusBold className={`${component?.id === currentAsset.id ? 'text-white' : 'text-blue-500'} w-5 h-5`}/>
+                { item.sensorType 
+                    ? <PiCubeFocusBold className={`${component?.id === item.id ? 'text-white' : 'text-blue-500'} w-5 h-5`}/>
                     : <GrCube className="text-blue-500 w-5 h-5"/>
                 }    
-                <span>{ currentAsset.name }</span>
-                { currentAsset.sensorType === 'energy' && <FaBolt className="text-green-500 w-4 h-4"/> }
-                { currentAsset.status === 'operating' && <FaCircle className="text-green-500 w-2.5 h-2.5"/> }
-                { currentAsset.status === 'alert' && <FaCircle className="text-red-500 w-2.5 h-2.5"/> }
+                <span>{ item.name }</span>
+                { item.sensorType === 'energy' && <FaBolt className="text-green-500 w-4 h-4"/> }
+                { item.status === 'operating' && <FaCircle className="text-green-500 w-2.5 h-2.5"/> }
+                { item.status === 'alert' && <FaCircle className="text-red-500 w-2.5 h-2.5"/> }
             </button>
-            { assets.length > 0 &&
-                <div className={`flex flex-col space-y-3 ml-2 pl-5 border-l border-gray-300 dark:border-gray-600 ${showSubAssets ? 'flex' : 'hidden'} `}>
-                    {assets.map((asset) => (
+            { item.children.length > 0 && showSubAssets &&
+                <div className={`flex flex-col space-y-3 ml-2 pl-5 border-l border-gray-300 dark:border-gray-600`}>
+                    {item.children.map((asset) => (
                         <AssetComponent
                             key={asset.id}
-                            currentAsset={asset} 
-                            assets={allAssets.filter((a) => a.parentId == asset.id)}
+                            item={asset}
                         />
                     ))}
                 </div>
